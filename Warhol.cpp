@@ -3,11 +3,23 @@
 
 #include "stdafx.h"
 
+void printCredits();
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
+	printCredits();
+
+	if (argc != 3)
+	{
+		std::cout << "Incorrect arguments. Aborting..." << std::endl;
+		return 0;
+	}
+	
+	std::string command = argv[1];
+	std::string imagePath = argv[2];
+
 	cv::Mat image;
-	image = cv::imread("C:\\Users\\davis\\OneDrive\\Pictures\\timetable.png", CV_LOAD_IMAGE_COLOR);  
+	image = cv::imread(imagePath, CV_LOAD_IMAGE_COLOR);
 
 	if (!image.data)        
 	{
@@ -15,10 +27,17 @@ int _tmain(int argc, _TCHAR* argv[])
 		return -1;
 	}
 
-	cv::imshow("Display window", image);
+	if (command == "-m")
+	{
 
-	cv::waitKey(0);
+	}
 
 	return 0;
 }
 
+void printCredits()
+{
+	std::cout << "------------------WARHOL------------------" << std::endl;
+	std::cout << "-----------------Davis Wu-----------------" << std::endl;
+	std::cout << std::endl;
+}
