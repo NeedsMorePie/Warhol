@@ -2,11 +2,14 @@
 //
 
 #include "stdafx.h"
+#include "Monroe.h"
 
 void printCredits();
+void resizeAndCrop(cv::Mat &image);
 
 int main(int argc, char* argv[])
 {
+	srand(time(NULL));
 	printCredits();
 
 	if (argc != 3)
@@ -27,10 +30,14 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
+	resizeAndCrop(image);
+
 	if (command == "-m")
 	{
-
+		Monroe processor(image);
 	}
+
+	cv::waitKey(0);
 
 	return 0;
 }
@@ -40,4 +47,25 @@ void printCredits()
 	std::cout << "------------------WARHOL------------------" << std::endl;
 	std::cout << "-----------------Davis Wu-----------------" << std::endl;
 	std::cout << std::endl;
+}
+
+void resizeAndCrop(cv::Mat &image)
+{
+	int rows = image.rows;
+	int cols = image.cols;
+	int minDimensions = rows < cols ? rows : cols;
+
+	int x = (cols - minDimensions) / 2;
+	int y = (rows - minDimensions) / 2;
+
+	if (x < 0) x = 0;
+	if (y < 0) y = 0;
+
+	// Do crop
+	cv::Rect myROI(x, y,
+		minDimensions, minDimensions);
+	image = image(myROI);
+
+	// Do resize
+	cv::resize(image, image, cv::Size(500, 500));
 }
