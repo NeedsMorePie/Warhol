@@ -31,7 +31,7 @@ void Monroe::process()
 	}
 
 	// Kmeans parameters 
-	const int numClusters = 5;
+	int numClusters = rand()%3 + 3;
 	cv::Mat labels;
 	const int attempts = 5;
 	cv::Mat centers;

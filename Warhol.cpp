@@ -6,20 +6,27 @@
 
 void printCredits();
 void resizeAndCrop(cv::Mat &image);
+void startContinuousCapture();
 
 int main(int argc, char* argv[])
 {
 	srand(time(NULL));
 	printCredits();
 
-	if (argc != 3)
+	if (argc < 2)
 	{
 		std::cout << "Incorrect arguments. Aborting..." << std::endl;
 		return 0;
 	}
 	
 	std::string command = argv[1];
-	std::string imagePath = argv[2];
+	std::string imagePath = argc >= 3 ? argv[2] : "";
+
+	if (command == "-video")
+	{
+		startContinuousCapture();
+		return 0;
+	}
 
 	cv::Mat image;
 	image = cv::imread(imagePath, CV_LOAD_IMAGE_COLOR);
@@ -68,4 +75,34 @@ void resizeAndCrop(cv::Mat &image)
 
 	// Do resize
 	cv::resize(image, image, cv::Size(500, 500));
+}
+
+void startContinuousCapture()
+{
+	cv::VideoCapture cap(0);
+
+	if (!cap.isOpened())
+	{
+		return;
+	}
+
+	cv::namedWindow("Warhol", 1);
+	while (true)
+	{
+		cv::Mat frame;
+		cap >> frame; 
+		cv::imshow("Warhol", frame);
+
+		int key = cv::waitKey(30);
+
+		if (key == 27) // ESC
+		{
+			break;
+		}
+		else if (key == 109) // m
+		{
+			resizeAndCrop(frame);
+			Monroe processor(frame);
+		}
+	}
 }
