@@ -54,6 +54,10 @@ void printCredits()
 	std::cout << "------------------WARHOL------------------" << std::endl;
 	std::cout << "-----------------Davis Wu-----------------" << std::endl;
 	std::cout << std::endl;
+	std::cout << "Commands:" << std::endl;
+	std::cout << "    -m <image path>     Monroe generator" << std::endl;
+	std::cout << "    -video              Continuous video feed" << std::endl;
+	std::cout << std::endl;
 }
 
 void resizeAndCrop(cv::Mat &image)
@@ -83,8 +87,11 @@ void startContinuousCapture()
 
 	if (!cap.isOpened())
 	{
+		std::cout << "Failed to capture video" << std::endl;
 		return;
 	}
+
+	std::cout << "Press ESC on the video feed to exit" << std::endl;
 
 	cv::namedWindow("Warhol", 1);
 	while (true)
