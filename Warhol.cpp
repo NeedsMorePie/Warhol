@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "Monroe.h"
+#include "Hundred.h"
 
 void printCredits();
 void resizeAndCrop(cv::Mat &image);
@@ -43,6 +44,10 @@ int main(int argc, char* argv[])
 	{
 		Monroe processor(image);
 	}
+	else if (command == "-h")
+	{
+		Hundred processor(image);
+	}
 
 	cv::waitKey(0);
 
@@ -56,6 +61,7 @@ void printCredits()
 	std::cout << std::endl;
 	std::cout << "Commands:" << std::endl;
 	std::cout << "    -m <image path>     Monroe generator" << std::endl;
+	std::cout << "    -h <image path>     Hundred generator" << std::endl;
 	std::cout << "    -video              Continuous video feed" << std::endl;
 	std::cout << std::endl;
 }
@@ -102,6 +108,9 @@ void startContinuousCapture()
 
 		int key = cv::waitKey(30);
 
+		if (key >= 0)
+		std::cout << key << std::endl;
+
 		if (key == 27) // ESC
 		{
 			break;
@@ -110,6 +119,11 @@ void startContinuousCapture()
 		{
 			resizeAndCrop(frame);
 			Monroe processor(frame);
+		}
+		else if (key == 104) // h
+		{
+			resizeAndCrop(frame);
+			Hundred processor(frame);
 		}
 	}
 }
