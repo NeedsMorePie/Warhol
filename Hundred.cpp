@@ -54,7 +54,7 @@ void Hundred::process()
 			double randNoiseFactor = (double)(rand() % 1001) / 1000 * 0.4 + blurSize / 10.0 * 0.3;
 
 			// Random gain factor
-			double randGainFactor = (double)(rand() % 300) / 1000 + 1.0 + (blurSize / 20.0);
+			double randGainFactor = (double)(rand() % 700) / 1000 + 1.0 + (blurSize / 20.0);
 
 			grid[i].push_back(convolved * gain * randGainFactor + gamma + noise * randNoiseFactor);
 		}
