@@ -108,8 +108,8 @@ void startContinuousCapture()
 
 		int key = cv::waitKey(30);
 
-		if (key >= 0)
-		std::cout << key << std::endl;
+		//if (key >= 0)
+		//std::cout << key << std::endl;
 
 		if (key == 27) // ESC
 		{

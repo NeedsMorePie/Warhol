@@ -11,6 +11,9 @@ public:
 private:
 	void process();
 
+	cv::Mat convolve(const cv::Mat &x, const cv::Mat &h);
+	cv::Mat stitch(const std::vector<std::vector<cv::Mat>> &grid);
+
 	cv::Mat image;
 	cv::Mat grayscale;
 };
