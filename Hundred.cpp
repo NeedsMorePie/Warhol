@@ -29,7 +29,7 @@ void Hundred::process()
 
 	// Get noise matrix
 	cv::Mat noise = cv::Mat(grayscale.size(), grayscale.type());
-	cv::randn(noise, 0, 15);
+	cv::randn(noise, 0, 17);
 
 	// Initialize a grid of images
 	std::vector<std::vector<cv::Mat>> grid;
