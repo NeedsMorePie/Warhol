@@ -31,7 +31,7 @@ void Monroe::process()
 	}
 
 	// Kmeans parameters 
-	int numClusters = rand()%3 + 3;
+	int numClusters = rand()%3 + 4;
 	cv::Mat labels;
 	const int attempts = 5;
 	cv::Mat centers;
@@ -86,9 +86,9 @@ void Monroe::setPixel(int i, int x, int y, int cluster_id,
 	const std::vector<std::vector<std::vector<float>>> &randColors, cv::Mat &image)
 {
 	float intensity = ((int)grayscale.at<uchar>(y, x)) / 255.0;
-	float intensityScale = 0.55;
-	intensity = intensity * intensityScale + (1 - intensityScale);
-	intensity += (0.4); // Increase brightness
+	float intensityScale = 2.0;
+	intensity = intensity * intensityScale;
+	intensity += 0.3;// (0.4); // Increase brightness
 
 	double r = randColors[i][cluster_id][0] * intensity;
 	double g = randColors[i][cluster_id][1] * intensity;
@@ -112,12 +112,12 @@ void Monroe::getColors(std::vector<std::vector<float>> &randColors, unsigned num
 		float originalG = originalColors.at<float>(i, 1);
 		float originalB = originalColors.at<float>(i, 2);
 
-		// Generate random color as a float from 0 to 1
-		float r = (double)(rand() % 1001) / 1000.0 * 255.0;
-		float g = (double)(rand() % 1001) / 1000.0 * 255.0;
-		float b = (double)(rand() % 1001) / 1000.0 * 255.0;
+		// Generate random color as a float from 0.4 to 0.9
+		float r = ((double)(rand() % 500) / 1000.0 + 0.4) * 255.0;
+		float g = ((double)(rand() % 500) / 1000.0 + 0.4) * 255.0;
+		float b = ((double)(rand() % 500) / 1000.0 + 0.4) * 255.0;
 
-		float originalWeight = 0.65;
+		float originalWeight = 0.3;
 		float newWeight = 1.0 - originalWeight;
 
 		// Average them with the original colors (weight the original colors more)
