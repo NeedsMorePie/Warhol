@@ -18,7 +18,7 @@ Monroe::~Monroe()
 void Monroe::process()
 {
 	// Convert to lab
-	//cv::cvtColor(image, image, cv::COLOR_BGR2Lab);
+	cv::cvtColor(image, image, cv::COLOR_BGR2Lab);
 
 	// Blur image
 	cv::blur(image, image, cv::Size(10, 10));
@@ -40,7 +40,14 @@ void Monroe::process()
 			{
 				if (channelsToUse.find(z) != channelsToUse.end())
 				{
-					samples.at<float>(y + x*image.rows, z) = image.at<cv::Vec3b>(y, x)[z];
+					if (z == 0)
+					{
+						samples.at<float>(y + x*image.rows, z) = image.at<cv::Vec3b>(y, x)[z]*0.3;
+					}
+					else
+					{
+						samples.at<float>(y + x*image.rows, z) = image.at<cv::Vec3b>(y, x)[z];
+					}
 				}
 				else
 				{
