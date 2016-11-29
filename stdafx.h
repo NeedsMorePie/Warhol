@@ -14,6 +14,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <unordered_set>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>

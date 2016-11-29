@@ -17,23 +17,54 @@ Monroe::~Monroe()
 
 void Monroe::process()
 {
+	// Convert to lab
+	cv::cvtColor(image, image, cv::COLOR_BGR2Lab);
+
+	// Blur image
+	cv::blur(image, image, cv::Size(15, 15));
+
+	// Get H channel
+	std::vector<cv::Mat> splitChannels;
+	cv::split(image, splitChannels);
+
+	// Previews
+	/*
+	imshow("hi", splitChannels[0]);
+	imshow("hi1", splitChannels[1]);
+	imshow("hi2", splitChannels[2]);
+	*/
+
+	// Channels to use
+	std::unordered_set<int> channelsToUse;
+	//channelsToUse.insert(0);
+	channelsToUse.insert(1);
+	channelsToUse.insert(2);
+
 	// Flatten
-	cv::Mat samples(image.rows * image.cols, 3, CV_32F);
+	int channels = image.channels();
+	cv::Mat samples(image.rows * image.cols, channels, CV_32F);
 	for (int y = 0; y < image.rows; ++y)
 	{
 		for (int x = 0; x < image.cols; ++x)
 		{
-			for (int z = 0; z < 3; ++z)
+			for (int z = 0; z < channels; ++z)
 			{
-				samples.at<float>(y + x*image.rows, z) = image.at<cv::Vec3b>(y, x)[z];
+				if (channelsToUse.find(z) != channelsToUse.end())
+				{
+					samples.at<float>(y + x*image.rows, z) = image.at<cv::Vec3b>(y, x)[z];
+				}
+				else
+				{
+					samples.at<float>(y + x*image.rows, z) = 0;
+				}
 			}
 		}
 	}
 
 	// Kmeans parameters 
-	int numClusters = rand()%3 + 4;
+	int numClusters = rand() % 2 + 4;
 	cv::Mat labels;
-	const int attempts = 5;
+	const int attempts = 6;
 	cv::Mat centers;
 
 	// Run kmeans
@@ -88,7 +119,7 @@ void Monroe::setPixel(int i, int x, int y, int cluster_id,
 	float intensity = ((int)grayscale.at<uchar>(y, x)) / 255.0;
 	float intensityScale = 2.0;
 	intensity = intensity * intensityScale;
-	intensity += 0.3;// (0.4); // Increase brightness
+	intensity += 0.22; // (0.4); // Increase brightness
 
 	double r = randColors[i][cluster_id][0] * intensity;
 	double g = randColors[i][cluster_id][1] * intensity;
@@ -112,12 +143,12 @@ void Monroe::getColors(std::vector<std::vector<float>> &randColors, unsigned num
 		float originalG = originalColors.at<float>(i, 1);
 		float originalB = originalColors.at<float>(i, 2);
 
-		// Generate random color as a float from 0.4 to 0.9
-		float r = ((double)(rand() % 500) / 1000.0 + 0.4) * 255.0;
-		float g = ((double)(rand() % 500) / 1000.0 + 0.4) * 255.0;
-		float b = ((double)(rand() % 500) / 1000.0 + 0.4) * 255.0;
+		// Generate random color as a float from 0.2 to 1.0
+		float r = ((double)(rand() % 800) / 1000.0 + 0.2) * 255.0;
+		float g = ((double)(rand() % 800) / 1000.0 + 0.2) * 255.0;
+		float b = ((double)(rand() % 800) / 1000.0 + 0.2) * 255.0;
 
-		float originalWeight = 0.3;
+		float originalWeight = 0.2;
 		float newWeight = 1.0 - originalWeight;
 
 		// Average them with the original colors (weight the original colors more)

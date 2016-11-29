@@ -89,7 +89,7 @@ void resizeAndCrop(cv::Mat &image)
 
 void startContinuousCapture()
 {
-	cv::VideoCapture cap(1);
+	cv::VideoCapture cap(0);
 
 	if (!cap.isOpened())
 	{
